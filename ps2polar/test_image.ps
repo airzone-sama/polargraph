@@ -1,0 +1,55 @@
+%!
+%  a. kinsman
+%  6/4/92 old test image for Kodak
+%
+
+% define these for preview testing
+/previewing? { (PG-stroke) where {pop false}{true} ifelse } def
+
+% If previewing define a few things so we can drag and drop this file
+previewing? {
+	/inch { 19.931 mul } def
+	/pen-up {} def
+	/aspect_ratio { .9320 } def	% need this for previewing real easel
+}
+if
+
+5 inch 15 inch translate
+-45 rotate
+4 inch 4 inch scale
+
+%{ 1 exch sub } settransfer   % negative image testing
+
+/str  ( ) def
+
+% grayscale image
+16 16 8					% width, height, and depth of the image
+[16 0 0 16 0 0]				% image matrix - PS manual page 74
+					% [width 0 0 height 0 0] for images scanned left->right, bottom->top
+					% [width 0 0 -height 0 height] for images scanned left->right, top->bottom
+					
+{ currentfile str readhexstring pop }	% procedure that reads the following data
+					% no comments can appear after the image operator
+					% they will be missinterpred as image data
+					% these are hex values for each pixel read by PS
+image
+
+0000FFFFFFFFFFFFFFFFFFFFFFFFFF00
+0000FFEEEEEEEEEEEEEEEEEEEEEEEEEE
+DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+99999999999999999999999999999999
+88888888888888888888888888888888
+77777777777777777777777777777777
+66666666666666666666666666666666
+55555555555555555555555555555555
+44444444444444444444444444444444
+33333333333333333333333333333333
+22222222222222222222222222222222
+11111111111111111111111111111111
+00000000000000000000000000000000
+
+showpage
+

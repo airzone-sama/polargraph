@@ -1,0 +1,44 @@
+#summary Using the gondola
+
+= The Gondola =
+
+<a href="http://www.flickr.com/photos/euphy/6241270328/" title="Assembled gondola v2 by Euphy, on Flickr"><img src="http://farm7.static.flickr.com/6042/6241270328_b84d5cb794.jpg" width="500" height="500" alt="Assembled gondola v2"/></a>
+
+The gondola is the most interesting part of the whole machine, mechanically.  In fact, it's really the only mechanical part that isn't off-the-shelf or sealed in some way.
+
+The gondola must:
+
+* Hold the pen perpendicular to the surface at all times
+* Apply pressure to the page through the pen tip
+
+These are actually competing demands.
+
+The more pressure there is, the better the line is, so a heavy, tilted machine is great. 
+
+But the more pressure there is, the more friction there is on the pen tip, and the harder it is to keep the pen perpendicular.  The tip will tend to drag behind the motion of the gondola.  The further the centre of the moving mass is from the tip, the worse this will be.
+
+My ideal gondola would have the control lines pulling directly onto the pen tip itself, and the body of the pen would follow the tip.  This isn't practical, but I'm getting close to it.  I have a heavy, massy gondola that sits close to the surface.  The pen is held inside it so that it's tip is as close to the centre of the mass as possible.  The gondola is heavy so that the weight of the rest of the pen sticking out is small in comparison.
+
+I also have a hanger that is more-or-less right against the surface.  This is a mounting point for a servo motor AND somewhere to hang some extra weight on.  This extra weight can pull the triangle tighter for more control, but will also balance the gondola and keep the tip low.
+
+In this version, the control lines (strings) converge on an axis that is pretty in the centre of the pen.  This means that the machine is accurate, there is no parallax errors as the shape of the triangle changes.  Honestly, I have no idea if such errors would even be noticeable, but it seemed to me, when designing this, that I wanted to have fewer bits of dynamic geometry rather than more of them, so I went to the extra expense of having this "through-axis" gondola.  One less artefact to worry about.
+
+Of course this is not perfect either, and on the other hand, you can do almost as well with a bulldog clip and some bits of wire.  This is very much subject to the law of diminishing returns.  This level of weight and complexity was a pragmatic choice.
+
+ANYWAY, the gondola is very much a work in progress.
+
+<a href="http://www.flickr.com/photos/euphy/6240753601/" title="Gondola parts in 3mm acrylic by Euphy, on Flickr"><img src="http://farm7.static.flickr.com/6120/6240753601_d28265c1e5.jpg" width="500" height="375" alt="Gondola parts in 3mm acrylic"/></a>
+
+To put the pen in it, I just stick a blob of blu-tack on the pen, and stick it inside.  The tube is big enough for most regular office-sized pens, and a few marker-type pens.  A clamp of some sort is the next improvement for it.
+
+==Pen up / pen down control==
+If you have a little servo motor, and a long, light wire, you can mount it on the gondola hanger, and it can use it's control horn to lift or drop the pen.  This isn't a great movement, and could be improved, but it is useful for lifting the pen at the end of a long drawing, if the ink is likely to bleed into the paper.
+
+<a href="http://www.flickr.com/photos/euphy/6286936263/" title="Gondola with pen-lift servo attached by Euphy, on Flickr"><img src="http://farm7.static.flickr.com/6056/6286936263_f2f2f34372.jpg" width="500" height="375" alt="Gondola with pen-lift servo attached"/></a>
+
+Use the Servo 1 pin header on the motorshield, connecting it with the negative power wire (usually black) to the outermost pin, and the signal pin (usually white) to the innermost pin.  
+
+
+<img src="http://polargraph.googlecode.com/svn/wiki/images/P1030670_c_r_p.jpg"/>
+
+It is possible to put this on the wrong way around, and it is also possible to damage the servo if you don't spot it right away, so be careful here.  If you are using an extension wire, be aware that the colour of the wires at the socket may not correspond to the colour of the wires exiting the servo.

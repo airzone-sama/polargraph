@@ -1,0 +1,67 @@
+#summary The circuits and electric hardware required for a polargraph machine.
+
+= Basic =
+
+The original Polargraph is simply an Arduino compatible board with an Adafruit motorshield on top.  Each motor is wired into a pair of ports (M1 and M2, or M3 and M4).
+
+I buy my motorshields from www.oomlout.co.uk.
+
+An optional pen raising servo is on the motorshields servo port.
+
+This has no local file storage, so must be tethered to a host PC for the duration of the drawing.
+
+= Advanced =
+
+I'm working on a machine with some local storage in the form of an SD card, that will be able to run standalone, either by caching all of the commands through the regular control interface, or by allowing the application to export all commands to a text file, and then you would just copy that text file to the SD card using a regular card reader.
+
+So far, this uses different hardware, read BuildAdvancedElectronics for some stuff about that. 
+
+== Power ==
+The motorshield has it's own power supply, which is a AC/DC adapter, set to around 6 volts.  I supply a short power lead with an inline socket.  If you are changing this, check your polarity carefully - there are no protection diodes on the motorshield so you can damage it by putting it in the wrong way.
+
+<a href="http://www.flickr.com/photos/euphy/6152994144/" title="Polargraph Motorshield by Euphy, on Flickr"><img src="http://farm7.static.flickr.com/6178/6152994144_012501dba9.jpg" width="500" height="389" alt="Polargraph Motorshield"/></a>
+
+The motors I use are rated at 4.2v, but that means they can be driven at a higher voltage for short periods of time.  Higher voltages will increase torque and power and reduce the chance of dropping steps, but will get hot, both the L293D chips on top of the motorshield, and the motors themselves.  The maximum draw of the motorshield is 1200mA (2x 600mA), so try to get a beefier power supply if you can.  I use a 1000mA, variable voltage one, but ran for ages on a 600mA one, which was fine until I tried doing something stupid and it's little light went dim forever.
+
+== Cooling == 
+Not always necessary, but my motorshield chips were getting hot, so I got a spare 12v fan (an PC cooling fan actually) and wired it up to the 5v on the motorshield, and positioned it over the whole thing with a bit of blu-tack.  This keeps the ICs cool.  The motors themselves still get hot, but I don't mind that so much for some reason.  If I had some little DIP-16 sized heatsinks I'd put them on, and that would help a bit too.
+
+The arduino, and the logic on the motorshield is powered off USB.
+
+= Motor wiring =
+Each stepper motor has two circuits in it, two sets of windings.  On mine, the blue and red wires are connected to one circuit (circuit A), and the white and yellow are on the other (circuit B).
+The motorshield has four hardware motor ports, M1, M2, M3 and M4, arranged as two pairs.  The AFMotor software deals with two stepper ports, 1 or 2.  Stepper port 1 is made of M1 and M2, and stepper port 2 is made of M3 and M4.
+
+I call the motor on the left hand side MotorA, and the one on the right is MotorB.  In my case, I have MotorA connected to stepper port 2, and MotorB connected to stepper port 1.  This is because the machine is to the left-hand-side of my computer, so I want my USB cable exiting to the right.  No other reason.  This means the board is upside down, with the motorshield power cable coming out the top.
+
+If you have the arduino the right way round (picture below), and MotorA is connected to stepper port 1 (hardware terminals M1 and M2), then you'll need to modify the lines in the server code (lines 20 and 21)
+{{{
+AF_Stepper motora(motorStepsPerRev, 2);
+AF_Stepper motorb(motorStepsPerRev, 1);
+}}}
+
+to be
+
+{{{
+AF_Stepper motora(motorStepsPerRev, 1);
+AF_Stepper motorb(motorStepsPerRev, 2);
+}}}
+
+This picture shows it the right way round, using the second code block.
+<a href="http://www.flickr.com/photos/euphy/6152448683/" title="Polargraph arduino and motorshield and some tasty cabling by Euphy, on Flickr"><img src="http://farm7.static.flickr.com/6066/6152448683_a08684511f.jpg" width="500" height="375" alt="Polargraph arduino and motorshield and some tasty cabling"/></a>
+
+
+== Connections == 
+
+In the kit I've supplied, the four bare wires are labelled with number or stripes (or both). These correspond directly to the terminals on the motorshield, so each pair of wires corresponds to one motor port (M1, M2, M3 or M4).  Wire one motor up in sequence (1, 2, 3 then 4, top to bottom), and the other in the flipped sequence (3, 4, 1 then 2).  And try a test.
+
+As long as you wire these up in the pairs (1 and 2, or 3 and 4), then you can do no harm.  The worst that'll happen is the wheels will go the wrong way.
+
+<a href="http://www.flickr.com/photos/euphy/6152448905/" title="Polargraph motors wiring sequence by Euphy, on Flickr"><img src="http://farm7.static.flickr.com/6065/6152448905_4e4c800e90.jpg" width="500" height="375" alt="Polargraph motors wiring sequence"/></a>
+
+== Testing == 
+To test if you've got these the right way round, run the controller application, start the command queue and then hit the "home" button on the panel.  You should see the purple spot move to the top edge of the page on the screen, and the motors should wriggle slightly and then be locked in position.
+
+Now choose the option in the panel "move to" and click somewhere in the centre, at the bottom of the page.  You should see the wheels move in opposite directions, and in a way that would extend the string down the page.
+
+If one (or both) are reversed, cut the power and switch the sequence of the wires.

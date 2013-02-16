@@ -1,0 +1,14 @@
+#summary A tool for converting PG command files to PostScript for preview.
+
+= Introduction =
+
+PG_preview is a utility that generates a !PostsScript preview file from a Polargraph command file.  
+
+
+= Details =
+
+When you drag and drop a Polargraph command file onto the icon for this executable a file called "preview.ps" is created in the users's base directory (C:/Documents and Settings/username on  my XP system).   If you have a !PostScript based glass preview tool like GhostScript installed and assigned to .ps files, clicking on this preview.ps file will show you a reasonable representation of the Polargraph command file on your computer monitor.
+
+Statistics are provided in the end of the preview file in comments to tell you the extents in the X-Y space of the objects rendered, and in the A-B Polargraph space.  
+
+Eventually I will install code to make an estimate of rendering time when run on the Polargraph machine.

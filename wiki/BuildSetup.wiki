@@ -1,0 +1,30 @@
+#summary How to set up and commission the machine
+
+= Get your sizes into the code. =
+
+The actual physical size of your machine needs to be programmed into the arduino that's running it, and into the controller application.  
+
+The diagram on page 3 of http://code.google.com/p/polargraph/downloads/detail?name=polargraph%20instructions%2020111128.pdf shows how to lay out your marks and lines.
+
+
+== Machine Width ==
+Measure the distance between your driving sprockets, at the point that the cord will hang from.  Probably somewhere on the top quarter of the sprocket, but the closest point between the two sprockets will probably do.  Try to be as accurate as you can here, but you can always tune this later if you notice distortion.
+
+(It's actually not possible to get it completely accurate, because the model the code has in it's head thinks these points are fixed in space, but of course, the tangent of the cord on the sprocket moves slightly every time it moves.)
+
+This is your machine width.  Machine height is not critical to the geometry, only to the interface.  Use the size of the biggest (tallest) drawing you want to do.
+
+
+=Drawing area and home point=
+<a href="http://www.flickr.com/photos/euphy/6133629587/" title="Polargraph machine set up by Euphy, on Flickr"><img src="http://farm7.static.flickr.com/6197/6133629587_636ac44c75.jpg" width="375" height="500" alt="Polargraph machine set up"/></a>
+
+On your drawing surface, mark out a vertical line down the centre of the board - equidistant to your two sprockets, and draw a horizontal line between your sprockets, at the point you measured their distance from before.  *This is the top edge of your machine.*  On mine, in the picture above, it's not even a real line, so just imagine it's there.
+
+== Home point ==
+Your home point is the point on this vertical line that you manually move the gondola to before you do a drawing.  _You_ know the cartesian coordinates of it, the controller works out the polar coordinates of it, and _it_ tells the machine.
+
+By default it is always in the dead centre of the top edge of your page in the controller, and the page is always 120mm down from the top edge of your machine.
+
+I selected this value (120mm) because it was about the highest point that the machine could pull the gondola up to and hold it.  Obviously, as the gondola goes higher, the torque that is required goes up too.  Try and pull it higher than this and it'll start dropping steps and then you've got to start all over again.  Technically, it doesn't really matter where it is, as long as it's a point that the machine is comfortable holding it at.
+
+Anyway, mark this point on your drawing surface, 120mm down from the top edge, along with another horizontal line.  This horizontal line is what you put the top edge of your paper up to.  I also added vertical lines at the right dimensions for the kinds of paper I'll be using (A3, A2 etc).

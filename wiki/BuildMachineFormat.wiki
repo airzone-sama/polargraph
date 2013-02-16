@@ -1,0 +1,31 @@
+#summary Discussion of what format, shape, size the machine should take.
+
+=Mounting options=
+
+==Size and position==
+
+Choose the size of your machine drawing area by taking the largest sheet of paper you want to draw on and adding 150mm on left and right sides, and 250mm on the top.
+
+Margin on the bottom edge doesn't matter much, but the overall height of the top edge of the machine needs to be a certain distance from the floor, otherwise the counterweight string that hangs down either side of the machine (from the sprockets) will hit the floor.
+
+If the distance from your sprocket to the diagonally opposite corner of your machine is 1100mm (for instance), then your sprocket needs to be mounted at least 1100mm + 100mm (for the length of the weight itself) from the floor.
+
+The original machine is built onto a large sheet of chipboard, around 800mm wide by 1200mm tall, leaned against the wall.  This is not a magic size or configuration, it's just what the DIY shop had in it's clearance bin.
+
+
+==On a board==
+
+<a href="http://www.flickr.com/photos/euphy/6133629587/" title="Polargraph machine set up by Euphy, on Flickr"><img src="http://farm7.static.flickr.com/6197/6133629587_636ac44c75.jpg" width="375" height="500" alt="Polargraph machine set up" /></a>
+
+The board should slope backwards slightly, for the sake of stability.  This puts a little more pressure on the pen tip too and improves controllability, at the expense of the increased friction on the pen tip.
+
+The motors can be mounted either on the top edge of the board, with the sprockets hanging the edge.  You can use something fancy to do this, or just double-sided sticky foam pads.  Or they can be mounted on the face of the board using the motor mounting brackets.
+
+I have rubber feet on the bottom edge of my board, and a little stick of timber on the top edge, pointing backwards with a bit of felt on it to stop vibration from making it through into the wall.  All the edges are covered in tape.
+
+==On a wall==
+The motor mounting brackets were designed to let the motors be mounted on an unbroken surface, but still to get the sprocket very close to it.  I think this bit is doubly important on a vertical surface, because there's almost no pressure pulling the pen against it (no tilt).  
+
+The back panel of the mounting brackets is large, so that you can drill holes in it if you need to, but also so that there is plenty of surface area to grip if you use some low-adhesive fixings (like command strips) that are safe and temporary to use on walls.
+
+The reason I shied away from mounting stuff on the wall, (other than the fear of ripping paintwork off etc), is that if I lost power, or the strings fell off the sprockets or something, then the pen wouldn't then swing and draw all over my wall. Which would be hilarious if it happened to somebody else, but not to me and my landlady.

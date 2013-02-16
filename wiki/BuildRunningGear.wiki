@@ -1,0 +1,31 @@
+#summary How to set up the motors and cord and things
+
+=Running gear=
+==Motor mounting==
+Either mount your motors on the top edge of the board, with the drive shaft facing out, or mount them on the face of the board, using the brackets, with the drive shaft pointing backwards.
+
+If you don't have brackets, then I'm sure you can fashion some method of mounting them, like just with <a href="http://www.flickr.com/photos/euphy/6133629963/" title="Polargraph machine set up by Euphy, on Flickr">sticky foam pads.</a>
+
+The motors should be bolted to the motor mounting plate.  Use nylock nuts or shakeproof washers, or a bit of threadlock, because there is some vibration.  You can add a bit of padding if you find it's noisy - it might help.
+
+It's probably obvious how the other parts slot together.
+
+<a href="http://www.flickr.com/photos/euphy/6152442571/" title="Polargraph motor bracket by Euphy, on Flickr"><img src="http://farm7.static.flickr.com/6166/6152442571_29b4297085.jpg" width="500" height="375" alt="Polargraph motor bracket"/></a>
+
+The sprocket should be a tight push-fit onto the shaft.  Push it against a solid surface to get it in, rather than pushing the rim of the sprocket.
+
+The wires for the motor will be screwed into a terminal block.  These wires are usually a bit thin and delicate, which is why I try not to stretch them too far, or be always screwing and unscrewing them.  This way they get screwed once and stay screwed. Ahem.  The bit that gets chopped and changed is heavier gauge and more up to the task.  A connector of some sort would be a neater option, and I'm planning to upgrade this whole thing to use minifit connectors (like the four-pin, latching ones on graphics cards) at some point.
+
+The back plate for the motor bracket can be stuck onto a surface using some low-adhesive system (blu-tack, command strips), and it's extra big to allow this to be strong and stable.  If you're screwing it onto something, you can probably cut the size of this back plate right down.
+
+
+<a href="http://www.flickr.com/photos/euphy/6121851934/" title="Polargraph Kit parts - motor bracket by Euphy, on Flickr"><img src="http://farm7.static.flickr.com/6075/6121851934_e52fd733f7.jpg" width="375" height="500" alt="Polargraph Kit parts - motor bracket"/></a>
+
+The kit is supplied with a short cable and a long cable.  They are identical, but will be wired up in a slightly different order, depending on which one is left and which is right.
+
+The cable going to Motor B (right hand motor) will be wired into the terminal block on the motor bracket in sequence, that is, wire 1, 2, 3 then 4 from top to bottom.
+
+The cable for Motor A (left hand motor) will have the pairs switched over.  That is, it will be in sequence 3, 4, 1 then 2, from top to bottom.
+
+==Cords==
+Your cord needs to be long enough to stretch from the bottom corner of your biggest sheet of paper to the sprocket diagonally opposite it, and then with enough spare to tie onto whatever kind of counterweight you've decided to use.

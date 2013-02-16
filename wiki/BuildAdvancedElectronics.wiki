@@ -1,0 +1,29 @@
+#summary Advanced electronics build for standalone polargraph.
+
+= Making a standalone Polargraph =
+
+Two main challenges in standaloning:
+  # *Data* Obviously the data (commands, image, whatever) needs to be stored somewhere that isn't reliant on a host PC being on.  The most straightforward way to add some data storage to an arduino is to use a little SD memory card.
+  # *Control* If the PC isn't attached, then you need to figure out a different way of controlling the machine.  This can be buttons, or sensors, or just carefully chosen default values.  I have taken the path of least resistance and conceded that the PC can be attached in order to prepare and start the drawing.  This is a bit like how little CNC or 3d printers run.  I will add rudimentary controls for stopping/starting at some later point.
+
+= Adding memory to an Arduino Mega (ATMEGA1280+ based board) =
+
+Using a mega-based board makes using bulk memory so much easier.  There is no overlap on the requires pins with an adafruit motorshield, and plenty of I/O leftover for any sensors and control panels, even LCDs that might be useful in the future.  Plenty enough memory for full FAT-style card access makes programming dead easy.
+
+They are expensive though.  Ebay will furnish you with bargains if you don't mind a bit of risk.  A Mega-1280 is sufficient for the kind of stuff polargraph's will do, and they can usually be got for a slight discount over the more modern 2560's.
+
+<a href="http://www.flickr.com/photos/euphy/6893760679/" title="Polargraph machine - DFRduino Mega with Adafruit motorshield and micro-sd breakout. by Euphy, on Flickr"><img src="http://farm8.staticflickr.com/7183/6893760679_d27e7f395c_m.jpg" width="240" height="180" alt="Polargraph machine - DFRduino Mega with Adafruit motorshield and micro-sd breakout."/></a>
+
+= Adding memory to an Arduino UNO (ATMEGA328-based board) =
+
+It is possible to add an SD card to a regular Arduino (UNO-sized) for bulk data, but the libraries it uses are pretty big.  This can be solved by rolling your own card access routines (or nicking Didier Longueville's from here: http://arduino.cc/playground/Code/SDCARD).
+
+There's a host of datalogger shields and there's a few other shields (like the Ethershield) that has an SD card slot piggy-backed onto them, and even a couple of Arduino compatibles that have an SD card built-in (the Seeeeduino Stalker, for instance).   All of these use the SPI interface to communicate between the arduino and the SD card, and on an UNO-sized board, the SPI interface uses pins 10, 11, 12 and 13.
+
+Which is unfortunate because the Adafruit motorshield also uses those pins.  You can hack your shield and the AFMotor library to use different pins if you are up to it (http://code.google.com/p/polargraph/source/browse/#svn%2FAFMotor%2Fbranches%2FAFMotorSPI)  Here is my effort that moves the signals that were previously on pin 11 to be on pin 9, and moved the signals from pin 12 to pin 14.  I used some wire jumpers to make the circuit.
+
+<a href="http://www.flickr.com/photos/euphy/6038244442/" title="Using SD card and motorshield together by Euphy, on Flickr"><img src="http://farm7.staticflickr.com/6185/6038244442_4e6d322ec4_m.jpg" width="240" height="240" alt="Using SD card and motorshield together"/></a>
+
+To add insult to injury, I started running out of SRAM (the volatile memory that holds variables during runtime) too, and that made things very unreliable.  I had enough - but someone smarter than I can probably get this cracked.  Here is a post on the Adafruit forum about it http://forums.adafruit.com/viewtopic.php?f=31&t=22422.
+
+I eventually stopped developing this - maintaining such a highly optimised codebase doesn't appeal to me.

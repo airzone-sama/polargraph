@@ -1,0 +1,106 @@
+%!PS
+%
+%  A. Kinsman 12/13/11
+%
+% new debug frame - use large paper!
+% or for use in previewing on the screen.  Plot your image on top of this
+% to check alignment.
+%
+/Helvetica findfont 40 scalefont setfont	% define a font to print "ORIGIN"
+
+% define these for preview testing
+/previewing? { (PG-stroke) where {pop false}{true} ifelse } def
+
+% If previewing define a few things so we can drag and drop this file
+previewing? {
+	/inch { 19.931 mul } def
+	/pen-up {} def
+	/aspect_ratio { .9320 } def	% need this for previewing real easel
+}
+if
+
+/landscape? false def			% true for landscape, false for portrait
+/real-easel? false def			% display actual easel location? no longer necessary
+
+real-easel? {
+
+	200 150 translate   % translate to new origin- in arbitrary Ghostscript default page units
+
+	landscape? 
+	{
+		-90   rotate			 % rotate 90 deg CW
+	       	-1 1  scale			 % flip about Y axis (x=-x)
+		1  aspect_ratio scale		 % fix asymetric scaling problem so circles are round
+	}
+	{
+		0  inch  26 inch translate	 % go way up there
+		1  -1 scale			 % flip about X axis (y=-y)
+		aspect_ratio  1 scale		 % fix asymetric scaling problem so circles are round
+	} ifelse
+} if
+
+
+%------------------------------------------------------------------------------
+%
+%   Make a bunch of different targets for preview use only.
+%
+%------------------------------------------------------------------------------
+
+% text test
+
+true {
+0 0 moveto (ORIGIN) false charpath stroke
+} if
+
+% X-cross work area
+
+true {
+ landscape? 
+ {
+	 0 inch  0 inch moveto		% large paper perimeter
+	26 inch 24 inch lineto
+	 0 inch 24 inch moveto
+	26 inch  0 inch lineto
+ }
+ {
+	 0 inch  0 inch moveto		% large paper perimeter
+	24 inch 26 inch lineto
+	 0 inch 26 inch moveto
+	24 inch  0 inch lineto
+
+	3 inch 0 inch moveto		% 18"x23.5" small paper perimeter
+	18 inch 0 inch rlineto
+	0 inch 23.5 inch rlineto
+	-18 inch 0 inch rlineto
+	closepath
+
+	7.75 inch 7 inch moveto		% 8.5"x11" standard paper
+	8.5 inch 0 inch rlineto
+	0 inch 11 inch rlineto
+	-8.5 inch 0 inch rlineto
+	closepath
+
+ } ifelse
+ stroke
+} if
+
+% circle 10" diameter
+
+true {
+ landscape? 
+ {
+	 13 inch 12 inch moveto
+	 13 inch 12 inch 10 inch 0 360 arc
+ }
+ {
+	 12 inch 13 inch moveto
+	 12 inch 13 inch 10 inch 0 360 arc
+ } ifelse
+ stroke
+} if
+
+pen-up
+
+%showpage
+
+

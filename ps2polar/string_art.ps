@@ -1,0 +1,36 @@
+%!  string art
+%
+%  A. Kinsman 12/15/11
+%
+
+% define these for preview testing
+/previewing? { (PG-stroke) where {pop false}{true} ifelse } def
+
+% If previewing define a few things so we can drag and drop this file
+previewing? {
+	/inch { 19.931 mul } def
+	/pen-up {} def
+	/aspect_ratio { .9320 } def	% need this for previewing real easel
+}
+if
+
+0 setgray
+
+/catenary {
+0 .25 12 {
+  inch dup 12 inch exch sub 0 exch moveto 0 lineto stroke
+  } for
+} def
+
+7.5 inch 10 inch translate
+catenary
+9 inch 0 inch translate 90 rotate
+catenary
+9 inch 0 inch translate 90 rotate
+catenary
+9 inch 0 inch translate 90 rotate
+catenary 
+
+pen-up		% polite to pick up the pen
+
+showpage

@@ -1,0 +1,12 @@
+#summary How to use the controller software
+
+= Introduction =
+
+A quick guide about how to use the controller software.
+
+<a href="http://polargraph.googlecode.com/svn/wiki/images/interface%20with%20labels.jpg"><img src="http://polargraph.googlecode.com/svn/wiki/images/interface%20with%20labels.jpg"/></a>
+
+
+= Details =
+
+This is already covered in the instructable at http://www.instructables.com/id/Polargraph-Drawing-Machine/step12/Controller-software-Primer/ and the following steps.

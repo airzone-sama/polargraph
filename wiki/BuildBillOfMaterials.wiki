@@ -1,0 +1,28 @@
+#summary All the things you need to build a polargraph
+=Polargraph is made of:=
+  * Arduino compatible processor
+  * Adafruit Motorshield
+  * 2x 400 step (0.9 degree) stepper motor that draw less than 600mA each. Voltage isn't that important.
+  * Motor bracket parts in 3mm plywood (http://code.google.com/p/polargraph/downloads/list)
+  * A few metres of beaded blind cord - 12mm pitch, 4.5mm bead size.
+  * 2x beaded cord sprockets (3d printed http://www.shapeways.com/model/330572/2x_wide_polargraph_sprockets_5mm_axle.html)
+  * 3x 6003Z sealed bearings (10mm wide, 39mm outside diameter)
+  * Brass tube 17mm outside diameter, about 45mm long
+  * Gondola parts in 3mm acrylic (http://code.google.com/p/polargraph/downloads/list)
+  * Ballast (bags of nuts mostly)
+
+=Suppliers=
+  * http://www.oomlout.co.uk/
+  * http://www.coolcomponents.co.uk/
+  * http://www.rapidonline.co.uk/
+  * http://www.mouser.com/
+  * http://www.shapeways.com/
+  * http://www.simplybearings.co.uk/
+  * http://www.ponoko.com/
+
+=Advanced polargraph hardware=
+Currently testing SD card with:
+  * Arduino Mega
+  * Adafruit Datalogger shield
+
+Though neither of these are necessarily the best tools for the job, they are among the most simple to set up.

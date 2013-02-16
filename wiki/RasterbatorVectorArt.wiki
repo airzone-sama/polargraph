@@ -1,0 +1,62 @@
+#summary Some information about using the polargraph to draw artwork prepared with Rasterbator.
+
+= Introduction =
+
+Rasterbator is a program that reads bitmaps and produces a vector art half-toned version at various sizes.  It's pretty good.
+
+You can get it at [http://arje.net/rasterbator the Rasterbator site].
+
+It is designed to make it easy to split artwork over multiple pages, with the intention of making large-scale bits of artwork from lots of A4 sheets.
+
+= Preparing artwork =
+
+If you use Rasterbator to generate artwork for drawing with a polargraph, then you can set a custom page size that matches your machine size (or paper size), and ask it to spread the artwork over just one page.
+
+Convert the resulting PDF into an SVG and you'll find that it consists of  a load of circles of varying diameter.  Polargraph ignores fills and styles, and so only sees the lines themselves.
+
+There is an [http://www.polargraph.co.uk/forum/?mingleforumaction=viewtopic&t=49 interesting thread in the forum discussing this].
+
+There is something very odd about the way the circles interact though, it creates a very curious kind of gradient affect, and it's not one that agrees with the eye at all.  In particular, when the circles are increasing in size, there is a perceptible increase in the density of the area, but when the circles begin to converge on surrounding circles, there is a "dead" part of the spectrum where increases in the circle size actually lead to less ink being put down, because the lines are exactly coinciding with the surrounding lines.   And there's no increase in inking after this dead zone, because there's only ever going to be a maximum of four lines in any one "pixel" area, and we've already reached that point.
+
+On this pic you can see it a bit:
+
+[http://www.flickr.com/photos/euphy/7012246439/ http://farm7.staticflickr.com/6035/7012246439_c559d887f2_m.jpg]
+
+The black of the night sky behind is no darker than some parts of the moon itself, but what would be the darkest parts of the moon are actually lighter than the gradients leading up to them.
+
+I've just done this test drawing of a gradient test.
+
+[http://www.flickr.com/photos/euphy/6904846620/ http://farm6.staticflickr.com/5452/6904846620_1ff40a90e0_m.jpg]
+
+The portion from light to about the middle shows a genuine perceptual increase in density, then there's a dead zone where further increases in circle size don't increase density, and after that there's a kind of compressed second gradient.
+
+I would say for best results, use an input image that is pretty light, so it only uses the first half of the density spectrum, but I haven't put this advice into practice myself.
+
+= Optimising for drawing =
+
+Kongorilla helpfully documented how to convert the circles to squares to make them a lot quicker to draw:
+
+(From [http://www.polargraph.co.uk/forum/?mingleforumaction=viewtopic&t=57 the forum thread "Speedier Rasterbator (and StippleGen) Vector Drawings"].
+
+==In Inkscape:==
+  # Open the Rasterbator generated PDF.
+  # Go "View/Display mode" and change to "Outline".
+  # Delete all the unwanted shapes around the edges that Rasterbator makes, including circles so small you cant even see them.
+  # Using the "Edit paths by nodes" tool (F2), select a batch of circles (if I select more than ~8k circles, Inkscape chokes on my computer, so I work in batches of ~2k-4k).
+  # You should now see the "nodes" (control points) on the circles you've selected. Select all the nodes (cntrl/a is the easiest way).
+  # Click the "Make selected segments lines" button, which is on the lowermost horizontal toolbar along the top (the icon is two nodes with a straight diagonal line connecting them). The circles should now be diamonds.
+  # Mouse-click on your image to deselect the nodes, and then again to deselect the circles you've been working on.
+  # Repeat until all circles have been converted and then save as whateveryouwant.svg
+
+==For vectors created in StippleGen:==
+  # Open the SVG.
+  # All the circles are "grouped", so select the group with the "Select and transform objects tool" (F1) or just cntrl+a.
+  # Do an Object/Ungroup command (shft+cntrl+g).
+  # Delete all the unwanted circles around your image.
+  # Cntrl+a to select all the circles.
+  # StippleGen generates circle objects rather than round paths, so you need to convert them by clicking "Path/Object to Path" (shft+cntrl+c).
+  # From here on it's the same as for Rasterbator circles, step 4.
+
+I've found the StippleGen created vectors to be so large that when viewed in the controller I can't see them until I "scale vector" down, so don't be afraid if you don't see anything when you first load yours.
+
+https://lh6.googleusercontent.com/-rfcctqRN0sI/T4sUb-a3qaI/AAAAAAAAAo4/0RmchCcW5KE/s858/ConvertingCirclesInInkscape.jpg

@@ -1,0 +1,27 @@
+#summary A quick guide to generating TSP vector artwork for the polargraph machine.
+
+= Introduction =
+
+TSP (Travelling Salesman Problem) art is a way to convert shaded bitmaps into a kind of representative line art.
+
+
+= Details =
+
+<a href="http://www.flickr.com/photos/euphy/6743594703/" title="TSP Polargraph by Euphy, on Flickr"><img src="http://farm8.staticflickr.com/7158/6743594703_df1aff3895_z.jpg" width="640" height="640" alt="TSP Polargraph"/></a>
+
+I've done this by using [http://wiki.evilmadscience.com/TSP_art Dan Newman's TSP guide on the Evil Mad Science wiki], on how to prepare artwork for the Eggbot.  But MakerBlock has helpfully produced a quickstart version on the makerbot blog:  
+
+http://www.makerbot.com/blog/2012/03/12/single-line-art-traveling-salesman-problem-tutorial
+
+And see what you make of it.  
+
+(I bumped into one issue with the EMS process - http://www.evilmadscientist.com/forum/viewtopic.php?showtopic=4728, And that was solved by moving the three tsp art python files into a non-application folder and running them from there.
+but Makerblock's way of doing it is probably safer.
+
+
+To do this, you have to make sure that c:/program files/inkscape/python/  (or wherever your python installation is) is added to the PATH in your environment.  This is so that you can run python.exe from anywhere.)
+
+== The real issues ==
+This is easy technically, but quite hard to judge how dense the stippling should be to produce the desired effect.  It would be great to have a real-time way of altering brightness/contrast and seeing the effect on the number of stipple points.  
+
+As it is, it's pretty hit-and-miss, and I think the pen-width settings that are useful when doing bitmaps through the polargraph controller to achieve max / min densities would be nice to be able to work into the process.  A job for someone smarter than myself!

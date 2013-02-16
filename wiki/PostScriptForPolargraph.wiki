@@ -1,0 +1,48 @@
+#summary A PostScript front end allows PostScript to be sent to your Polargraph.
+#labels Featured,Phase-Deploy
+
+= Introduction =
+
+With the addition of a !PostScript front end to the Polargraph you can send simple !PostScript programs to Ghostscript, and it will in turn output Polargraph commands to standard output, which are captured into a file.  This resulting file can be loaded into the Polargraph controller program via the F4 menu option, 'import queue'.
+
+= Details =
+
+Check the project out from http://code.google.com/p/polargraph/source/browse/#svn%2Fps2polar%2Ftrunk or get the zip at http://polargraph.googlecode.com/files/PS%20to%20PolarV1.5.zip
+
+This piece of !PostScript preamble intercepts the path constructed in !PostScript and enumerates it with the pathforall operator, converting the path into commands for the Polargraph machine.  This makes possible all the capabilities of !PostScript, with the exception of filling operations.  It supports the following operators-
+
+stroke - renders the current PS path by chopping it into little segments which are straight on the Polargraph. Line width and color default to the pen currently in your device.
+
+sloppy-stroke- provided for those who are artistic and like the loopy (faster) paths the PG would perform without chopping them up.
+
+show   - renders any font supported by the Ghostscript package as an outline font because filling is quite complicated.
+
+image  - renders 8-bit grayscale images to the Polargraph using the Arduino to place pixels of the two different supported styles. It properly translates, rotates, and scales images.  It even invokes the correct !PostScript transfer function for each pixel.
+
+You will need to install Ghostscript on your computer to make this all work.  This will turn your Polargraph into a powerful vector graphics plotter. 
+
+
+Here is a simple program in !PostScript which connects the vertices of a polygon forming a network connection diagram -
+
+{{{
+/inch {72 mul} def
+4.25 inch 5.5 inch translate   % find center of page
+
+/sides 31 def      % number of sides to the polygon - PRIME NUMBERS WORK
+
+1 1 sides 2 div cvi {
+	4 inch 0 inch moveto
+	gsave
+	sides {
+		360 sides div 1 index mul rotate
+		4 inch 0 inch lineto
+	} repeat
+	stroke
+	grestore
+	pop
+} for
+showpage
+}}}
+
+It produces the image below:<br/>
+http://www.polargraph.co.uk/wp-content/uploads/2011/12/Untitled.jpg

@@ -1,0 +1,42 @@
+#summary About the software
+
+=A game of two halves=
+The software is in two parts, the first bit is the code that runs on the arduino, the hardware.  This is the _embedded_ code, or the server code.  It doesn't require regular updating, but I will release updates for it when necessary.
+
+The second part is the controller, the visual interface.  It is written in Processing.  It is easy to update and change, and I will be doing whenever I make a fix or an improvement. I will try not to break your old properties files that define your machine size, but it might happen anyway.
+
+== Embedded code ==
+
+This is known as the "server code" because it's what goes onto the arduino and deals with requests or commands from a client.
+
+This code is written, and executed in the Arduino environment.  This can be downloaded from <a href="http://arduino.cc/en/Main/Software">Arduino.cc</a>.  Arduino is programmed in a flavour of C.
+
+There are a couple of version of the server code for different kinds of hardware.  Most have their own branch in the repo, but the main one in the trunk is <a href="http://code.google.com/p/polargraph/source/browse/embedded/trunk/">polargraph_server_a1</a> which is for an ATMEGA328-based arduino (eg Arduino UNO, Duemilanove or compatibles), with an Adafruit motorshield.  This is the basic server that can draw lines and some pixels while connected to a computer that feeds it commands.  This uses Adafruit's <a href="http://www.ladyada.net/make/mshield/download.html">AFMotor library<a/>.
+
+
+The second main version is <a href="http://code.google.com/p/polargraph/source/browse/embedded/branch/polargraph_server_polarshield/">polargraph_server_polarshield</a> and this is for a ATMEGA2560-based arduino with a Polargraph polarshield attached.  This has a lot more features but the main one is standalone drawing - enabled by having an SD card attached, and physical controls.
+
+
+To open it, you should make a subfolder inside your arduino sketch folder and give it the same name as the source code file (eg polargraph-server_a1), and copy the .ino files into it.
+
+There is a little bit of help here <a href="http://www.instructables.com/id/Polargraph-Drawing-Machine/step8/Electronics-Arduino/">at the Instructable.</a>
+
+Both of these require Mike !McCauley's <a href="http://www.open.com.au/mikem/arduino/AccelStepper/">!AccelStepper library</a>.
+
+
+
+== Controller code ==
+
+There is a guide to how to use it here: SoftwareGuide 
+
+This code is written in the Processing Development Environment.  If you want to keep on the cutting edge of the code, you should download Processing and always run the controller from the source code.
+
+This is in the <a href="http://code.google.com/p/polargraph/source/browse/controller/trunk/">controller folder of the source repository<a/>.  There are a couple of external dependencies that need to be also installed if you care compiling from source:
+
+!ControlP5 UI Interface. <a href="http://www.sojamo.de/libraries/controlP5/">Here is the main page,</a> but the library version you need is <a href="http://code.google.com/p/controlp5/downloads/detail?name=controlP5_0.5.4.zip&can=2&q=">an older version, 0.5.4 that you can get direct from the google code project page.</a>
+
+<a href="http://www.ricardmarxer.com/geomerative/">Geomerative</a>
+
+There is also some precompiled binaries for Mac and Windows at http://code.google.com/p/polargraph/downloads/list.
+
+Have a look at the <a href="http://www.instructables.com/id/Polargraph-Drawing-Machine/">Instructable I wrote about this gear.

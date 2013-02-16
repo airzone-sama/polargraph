@@ -1,0 +1,39 @@
+#summary Basic introduction to the polargraph.
+= What! =
+
+A *polargraph* is what I decided to call this drawing machine that I made, but it also describes the output. The machine is a simple device, that draws picture using a normal pen, some motors and some string.
+
+= More? =
+
+It's called a *polargraph* because it uses a dual-polar coordinates system internally, rather than the regular cartesian system we (and computer systems) tend to use.  I mean, it doesn't really, because a polar coordinates system uses direction and distance, whereas I'm just using distance.  It's a kind of triangulationographic system.  I like polargraph, I admit.
+
+<a href="http://www.flickr.com/photos/euphy/6121307965/" title="Polargraph Kit parts - commissioning and drawing a test cooper by Euphy, on Flickr"><img src="http://farm7.static.flickr.com/6069/6121307965_eed68412ca.jpg" width="375" height="500" alt="Polargraph Kit parts - commissioning and drawing a test cooper"/></a>
+
+The mechanism is not original: I have mainly taken inspiration from Hektor the spraycan robot, but in researching my machine came across prior art in the form of the AS200 drawbot and Harvey Moon's drawing machine. And draftsmen will recognise this as a primitive, gravity assisted pen plotter.  There are quite a few different recitals of this particular configuration around in the wild now.
+
+= How!? =
+
+The whole system is fairly technologically agnostic, but the current incarnation uses an Arduino microcontroller and an Adafruit Motorshield, along with a couple of stepper motors. The application that drives it from the computer is written in Processing. It decodes a bitmap and creates a map of the file using a polar coordinates system, recording pixel position, size and brightness. The hardware requests each pixel in turn, and renders it on the page using it's own shading and movement algorithms.
+
+Alternatively, you can load an SVG and use the machine as an affordable, large/flexible format pen plotter.
+
+I'm using bristol board and smooth cartridge paper to draw on (bristol board doesn't come in A1 sizes), with Sharpie markers, Kuretake ZIG Writers and ZIG Millennium pens and UNIPIN fineliners for fine stuff.
+
+= GIMME. = 
+
+You can build one:
+  * [BuildBillOfMaterials Bill of materials.]
+  * [BuildMachineFormat Machine format.]
+  * [BuildRunningGear Motors, sprockets and running gear.]
+  * [BuildElectronics Electronics.]
+  * _[BuildAdvancedElectronics Advanced Electronics]_
+  * [BuildGondola Gondola (pen holder).]
+  * [BuildSoftware Software.]
+  * [SoftwareGuide How to use the controller software]
+  * [DrawingVectorGraphics Drawing vector art.]
+  * [TspVectorArtOnPolargraph TSP vector art.]
+  * [RasterbatorVectorArt Using Rasterbator.]
+  * [PostScriptForPolargraph How to use the postscript interpreter]
+  * [BuildSetup Set up and calibrate.]
+  * [BuildMedia Pens and paper.]
+  

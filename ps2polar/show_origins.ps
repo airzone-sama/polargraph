@@ -1,0 +1,58 @@
+%!
+%  a. kinsman
+%  12/17/2011 show coordinates of the origin for landscape and portrait
+%
+
+% define these for preview testing
+/previewing? { (PG-stroke) where {pop false}{true} ifelse } def
+
+% If previewing define a few things so we can drag and drop this file
+previewing? {
+	/inch { 19.931 mul } def
+	/pen-up {} def
+	/aspect_ratio { .9320 } def	% need this for previewing real easel
+}
+if
+
+0 inch 0 inch moveto
+0 inch 0 inch .25 inch 0 360 arc
+stroke
+
+0 inch 2 inch moveto
+0 inch 2 inch .25 inch 0 360 arc
+stroke
+
+0 inch 26 inch moveto
+0 inch 26 inch .25 inch 0 360 arc
+stroke
+
+24 inch 0 inch moveto
+24 inch 0 inch .25 inch 0 360 arc
+stroke
+
+24 inch 2 inch moveto
+24 inch 2 inch .25 inch 0 360 arc
+stroke
+
+24 inch 26 inch moveto
+24 inch 26 inch .25 inch 0 360 arc
+stroke
+
+% show corners on small 18"x23.5" expensive paper
+
+2.5 inch 0 inch translate
+
+0 inch 0 inch moveto
+0 inch 0 inch .25 inch 0 360 arc
+stroke
+
+18 inch 23.5 inch moveto
+18 inch 23.5 inch .25 inch 0 360 arc
+stroke
+
+pen-up
+
+showpage
+
+
+

@@ -1,0 +1,28 @@
+#summary how to use the polargraph machine to draw vector graphics
+
+= Introduction =
+
+How to use a polargraph machine to draw vector graphics.
+
+
+= Details =
+
+The polargraph machine can be used to draw vector graphics.  This makes it a cheap, flexible format poster drawing machine.  Cracking.
+
+You will need a version of the polargraph server from Jan 15 2012 or later (r190).  Get this from <a href="http://code.google.com/p/polargraph/source/browse/embedded/trunk/polargraph_server_a1.ino">the server code repository</a>.
+
+Previous version aren't up to drawing the straight lines as well.
+
+http://polargraph.googlecode.com/svn/wiki/images/load%20vector%20graphics.jpg
+
+Click *load vector* from the input control panel, and choose your SVG file.  If you can't see your vector, click "move vector" and you should see it floating under your mouse as you move it.  Click again to place the SVG.  You can resize by dragging the *resize vector* number spinner.  Here 100 represents full size, that is 1px in inkscape equals 1mm on the machine.
+
+Note that the controller isn't that efficient - loading a really complex drawing can take a minute or two.  And displaying / moving / resizing that drawing will be very slow.
+
+Only lines that are entirely within the page area will be processed by the controller, so you can crop your line art by resizing the page area.
+
+Now click render vector to convert the line art into polargraph commands and load them all into the command queue.  For vector work, the move direct command is used to tell the machine where to move, and it will always draw in a straight line on the board. The down side is that it's a lot slower because it basically chops the line into dozens of smaller lines, and has to do a lot more calculations continuously.
+
+<a href="http://polargraph.googlecode.com/svn/wiki/images/queue%20vector%20preview.jpg"><img src="http://polargraph.googlecode.com/svn/wiki/images/queue%20vector%20preview.jpg"/></a>
+
+While the *show queue preview* toggle is on then the controller will also continuously sort through the queue and attempt to give a preview of the commands which are in it.  This gets really slow for big or complex drawings, so use with caution.

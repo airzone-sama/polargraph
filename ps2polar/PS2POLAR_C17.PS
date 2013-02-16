@@ -1,0 +1,337 @@
+%! 
+%  PS2POLAR.ps - translate PostScript to polargraph cmds
+%
+%  V1.1 - 12/15/2011
+%         fix aspect ratio on my machine
+%         fix definition of cm and mm
+%         adjust origin slightly
+%         remove clipping plans, loopy paths make this useless.
+%         add a few more comments to tell how this works.	
+%         remove CNC relative stuff left over from ToyCrafter code.
+%
+%  V1.2 - 12/21/2011
+%         Added new philosphy - make best lines possible at cost of time.
+%                             - make sloppy lines available through 'sloppy-stroke'
+%                             - only redefine stroke, show, and image, let PS do rest
+%	  Fix a few bugs related to not faithfully processing the path.
+%	  Automatically perform a flattenpath before stroking to remove curveto segs
+%	  Move the line rendering chop code into the processing of the path.   
+%	  Provides better rendering of outline text.
+%        
+%  V1.3 - 12/25/2011
+%         Fix sloppy line added by closepath operator 
+%
+%  V1.4 - 12/30/2011
+%	Removed the targets included in PS2POLAR.PS, use show_origins.ps instead if you need them.
+%	Removed unnecessary bind in lineto-seg routine.  
+%	Removed a few lines of code in the Lineto-seg routine.
+%
+%  V1.5 - 1/2/12
+%	remove support for sloppy-stroke.
+%	Add support for C17 commands to server - cuts down serial port traffic and cmd file size.
+
+%-----------------------------------------------------------------------------------
+%  PS2POLAR ROUTINES
+%
+%  12/8/11  A. Kinsman
+%
+%
+% Select a font of chioce and scale it to your needs.  If required.
+%
+%/Hershey-Gothic-English findfont 200 scalefont setfont
+/Helvetica findfont 40 scalefont setfont
+%/Courier findfont 40 scalefont setfont
+
+%
+% used to convert from cartesian coords to native polargraph (stepper motor count lengths)
+%
+/machine_width 1116 def	       % mm between the circumference points of pulleys
+/steps_per_rev  800 def        %
+/mm_per_rev      96 def        %
+/aspect_ratio .9320 def	       % things plotted in portrait are too fat, landscape too tall
+/landscape?   false def	       % perform landscape mode? = 90CW rotated output
+/pen_writing?  true def        % state of pen - assume down, so it will be picked up
+/last_moveto_x    0 def        % last seen moveto location in a path - used for closepath
+/last_moveto_y    0 def        %   (device coords)
+/last_x		  0 def	       % last point put in the path
+/last_y           0 def        %   (device coords)
+/C17_precision	 20 def	       % precision for C17 commands sent to server SMALLER = better, but slower
+
+% convert from Alength (in mm) to steps
+/to_steps { mm_per_rev div steps_per_rev mul } def
+
+% convert to native Polargraph machine coordinates
+% call with x,y return a,b (length of left and right strings on Polargraph)
+% (x,y) -- (a,b)
+/native-coords {
+	exch					 % y x
+	2 copy				         % y x y x
+	dup mul exch                             % y x x^2 y
+	dup mul exch                             % y x y^2 x^2
+	add sqrt				 % y x a
+	3 1 roll				 % a y x
+	machine_width exch sub dup mul           % a y x^2
+	exch dup mul add sqrt		         % a b
+	to_steps exch to_steps exch              % a b  (now in steps)
+	cvi exch cvi exch			 % convert both to integers
+} def
+
+% dump two values to std out.
+% ( x y -- )
+/dump-xy {  
+		native-coords			% switch to native coordinates
+		exch 
+		(C17,) print			% setposition operation for polargraph
+		6 string cvs print		% print a string length
+		(,)   print
+		6 string cvs print		% print b string length
+		(,)   print
+		C17_precision
+		6 string cvs print		% print precision value
+		(,END\n)  print
+} def
+
+% pen-down    Pen down operation for polargraph - only put it down if not down
+/pen-down {
+   pen_writing? not { (C13,END\n) print 
+                  true  /pen_writing? exch def } if
+} def
+
+% pen-up      Pen up operation for polargraph - only pick it up if not up
+/pen-up {
+   pen_writing?     { (C14,END\n) print
+                  false /pen_writing? exch def } if
+} def
+
+% new primatives for pathforall to use
+%
+/PGp-moveto     { transform			% transform coordinates to user space
+		2 copy /last_moveto_y exch def /last_moveto_x exch def % save last moveto x and y
+		2 copy /last_y exch def /last_x exch def 	       % save last x,y point
+		pen-up dump-xy } def
+/PGp-lineto    { transform			% transform coordinates to user space
+		2 copy /last_y exch def /last_x exch def 	       % save last x,y point
+	       pen-down dump-xy } def
+/PGp-curveto   { (****WARNING-curveto-used. Why? I just removed them with 'flattenpath'.\n) print 
+               pop pop pop pop pop pop } def
+/PGp-closepath { last_moveto_x last_moveto_y dump-xy } def	% closes to last seen moveto in path
+
+% new stroke definition - expoit PS pathforall command to walk the path 
+% and output polargraph commands for each segment to stdio
+%
+/PG-stroke {
+  flattenpath			% automatically flatten the path to remove curveto segments
+  { PGp-moveto }
+  { PGp-lineto }
+  { PGp-curveto }
+  { PGp-closepath }
+  pathforall			% enumerate the path converting to PG commands
+  newpath
+} bind def
+
+% new show definition - show outline of the requested text, filling not possible.
+% WARNING long pieces of text may exceed path size in Ghostscript
+%
+% ( string -- )
+/PG-show { false charpath PG-stroke } bind def  
+
+
+%  IMAGE command ---------------------------------------------------------------
+%
+%  Rewrite the PostScript Image command to generate pixel commands
+%  for Sandy Noble's wonderful Polargraph machine
+%  Now any image normally sent to a PS printer can land on the Polargraph.
+%
+%  This routine transfers the image to the screen in every way a postscript
+%  printer does, even executing the transfer function.  The spot function is
+%  unique to each rendering engine, so we are at the mercy of the Polargraph
+%  for the production of our pixels.  It supports several styles. It really
+%  likes to lay out images in a path from NW to SE or rotated -45 in the 
+%  postscript world.  So if you want nice straight lines of pixels with good
+%  connections between one and the next, rotate your user space -45 degrees,
+%  or clockwise 45 degrees, before printing.  You will like these results best.
+%  Other results will produce interesting effects as it tries to connect the
+%  pixels.
+%
+/pixel_type      0 def			% 0-square 
+					% 1-scribble
+					% 2-box around pixel locations (not very useful)
+					% 3-saw tooth   (might not be included in your server code)
+					% 4-round       (might not be included in your server code)
+
+/pixel_cmds (C05,C06,C07,C15,C16,) def	% strings needed to make above commands	
+
+/pixel_cmd  { pixel_cmds pixel_type 4 mul 4 getinterval } def   % specific command requested
+
+/pixel_size 1 def			% width in motor step counts  IE. 50 = .25 inch
+/pen_width  5 def			% in step counts, XXX could change to inches.
+
+% This redefines the PostScript 'image' operator for the Polargraph machine
+% The best documentation for this is the Postscript handbook, see image command
+% or see page 75 where it talks about how the two transformation matrices are used
+% to cause an image to hit device space.  Bring your calculator, paper and pencil
+% use a nearby printer or ghostscript to enter transforms to assist in your math.
+%
+% NOTE - only 8 bit images are processed, others are not rendered.
+%
+%  ( width height bits/sample matrix proc -- )
+/PG-image {
+    2 index 8 eq 			% only process 8 bit images
+    {
+	(C08,A,LTR,END\n) print		% ask for left to right pixels
+					% XXX bug here for rare image transforms
+
+	/x 0 def /y 0 def		% coordinates of the image pixel we are reading x=0,y=0
+
+	% compute pixel size for this image to pass to the Polargraph subsystem
+	% check two adjacent pixel starting locations and subtract machine coordinates
+	% This works best if the user has done a -45 rotate.
+	% So go after pixel (0,0) and pixel (1,0) use this simple method instead for upright
+	% or 90 degree rotated images   pix size = sqrt( (abs(a1-a2)^2) + (abs(b1-b2)^2) )
+	0 0 3 index itransform transform	% pixel (0,0) locatin in device space
+	native-coords		% now in stepper motor lengths  ( a1 b1 )
+	1 0 5 index itransform transform	% pixel (1,0) location in device space
+	native-coords		% now in stepper motor lengths  ( a1 b1 a2 b2 )
+	3 -1 roll		% (a1 a2 b2 b1 )
+	sub abs dup mul		% (a1 a2 delta_b^2 )
+	3 1 roll		% (delta_b^2 a1 a2 )
+	sub abs dup mul		% (delta_b^2 delta_a^2 )
+	add sqrt cvi		% 
+	pen_width 2 div sub cvi	% shave off half pen width, which is a fixed size
+	/pixel_size exch def	% save it for later
+
+	% obtain and render each pixel value
+	{
+		x 0 eq {	
+			% start of a new row?  pen up, move to start, pen down
+			% find next line starting point in machine coords
+			x y 3 index itransform transform
+			native-coords		% now in stepper motor lengths
+			exch				   
+			(C14,END\n)  print	% pick up the pen				
+			(C01,)       print	% move to new location
+			8 string cvs print
+			(,)          print
+			8 string cvs print
+			(,END\n)     print
+			(C13,END\n)  print	% put down the pen
+		} if
+
+		dup exec		% obtain pixel values in a string
+					% ( - string )   string can be any length...hum.
+
+		% returned string is an array of 8 bit pixel values - process each pixel
+		dup length 1 sub 0 exch 1 exch {  %  ( - string loop-index )
+			%debug dup = x = y = (test\n) print
+			% now things get exciting
+			% convert x and y image coords to user space coords, by the magic of Postscript						
+			x y 5 index itransform transform
+
+			% convert resulting x and y to Alen, Blen for Polargraph
+			native-coords		% ( - string index Alen Blen )	
+
+			% make PG pixel command
+			pixel_cmd print		% print "C05," or similar
+			exch
+			8 string cvs print	% print 'Alen' left motor step count
+			(,)          print	% print comma
+			8 string cvs print	% print 'Blen' left motor step count
+			(,)          print	% print comma
+			pixel_size 
+			8 string cvs print 	% print pixel size
+			(,)          print	% print comma
+			2 copy get		% extract pixel value from string
+			
+			% Lets perfrom the current transfer function on the image data
+			% values are 0-255, must be 0->1 to apply current transfer function
+			255 div			% now 0->1
+			currenttransfer exec	
+			255 mul	cvi		% now 0->255 again to send to the PG
+			8 string cvs print 	% print pixel value
+			(,END\n)     print	% END
+
+			pop			% toss loop-index		
+
+			% bump x image pixel coords we are processing  x++, y++ if necessary
+			x 1 add /x exch def 		
+			x 6 index ge { 0 /x exch def y 1 add /y exch def } if   
+
+			% end of image?
+			y 5 index ge { exit } if
+		} for
+		pop     % toss string
+		y 4 index ge { exit } if
+	} loop
+	(C14,END\n)  print		% pick up the pen, not necessary, but might save image.				
+    }
+    {	
+	(ERROR - The Polargraph can only print 8 bit images.\n) print
+    } ifelse
+    pop pop pop pop pop		% toss input stack arguments
+} def
+%--END IMAGE---------------------------------------------------------------------------------
+
+
+
+% redefine several commands to override any subsequent commands the 
+% interpreter sees so it will use mine and generate polargraph commands to 
+% standard output. bind them as well.
+%
+/stroke       { PG-stroke } bind def	% best lines we can render true to PS
+/show         { PG-show   } bind def
+/image        { PG-image  } bind def
+/showpage     { quit      } bind def	% not likely to need this if you are running this file
+
+
+
+% useful defines for moving around on the polargraph board
+%
+/inch { 19.931 mul } def		% so postscript writers can work in inches
+/cm   { 1 inch 2.54 div mul } def	% and centimeters
+
+% translate to a new origin in the upper left corner of the polargraph board
+
+200 150 translate   % translate to new origin- in arbitrary Ghostscript default page units
+
+landscape? 
+{			 		 % landscape setup - origin upper left, work area is rotated 90 deg clockwise on board
+	-90   rotate			 % rotate 90 deg CW
+       	-1 1  scale			 % flip about Y axis (x=-x)
+	1 aspect_ratio scale		 % fix aspect ratio so circles are round - reduce Y scale
+} 
+{			 	         % portrait setup - origin at lower left corner of board
+	0     inch 26   inch translate   % translate again way up there
+	1   -1 scale                     % flip about x axis (y=-y)
+	aspect_ratio 1 scale		 % fix aspect ratio so circles are round - reduce X scale
+}
+ifelse
+
+%
+% At this point you work in inches (or the equivalent metric defined above) in the area-
+% 
+%  Portait mode-
+%  x values of 0->24 inches  (realisticly about 150 discrete plotting points per inch)
+%  y values of 0->26 inches
+%  origin is in the lower left corner of your board!
+% 
+%  Landscape mode-
+%  x values of 0->26 inches
+%  y values of 0->24 inches
+%  origin is in the upper left corner of your board.
+%
+%  ALENGHTH values of 2434->9257 steps for the left motor (your assembly may vary slightly)
+%  BLENGHTH values of 2970->9690 steps for the right motor
+%  which are the units in the native polargraph world (assuming 800 step/rev motors)
+%
+%  Keep your pen on the board!
+%  
+
+pen-up			% always start with the pen up.
+
+%END PS2POLAR ROUTINES --------------------------------------------------------------
+
+
+
+
+
+

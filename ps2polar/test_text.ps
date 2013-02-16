@@ -1,0 +1,22 @@
+%! better regression test text as well
+%
+
+/Helvetica findfont 40 scalefont setfont	% define a font to print "ORIGIN"
+
+% define these for preview testing
+/previewing? { (PG-stroke) where {pop false}{true} ifelse } def
+
+% If previewing define a few things so we can drag and drop this file
+previewing? {
+	/inch { 19.931 mul } def
+	/pen-up {} def
+	/aspect_ratio { .9320 } def	% need this for previewing real easel
+}
+if
+
+
+ 0 inch 0 inch moveto (ORIGIN) show	% print some text
+
+pen-up
+
+showpage
